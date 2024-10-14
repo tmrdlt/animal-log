@@ -1,0 +1,38 @@
+name: Code Check
+on:
+  push:
+    branches:
+      - main
+  pull_request: {}
+
+concurrency:
+  group: ${{ github.job }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-and-test:
+    name: 🔬 ESLint, 🔎 TypeScript, 💅 Prettier, and 🃏 Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 📥 Download deps
+        run: yarn --prefer-offline
+
+      - name: 🔬 Lint
+        run: yarn lint:strict
+
+      - name: 🔎 Type check
+        run: yarn typecheck
+
+      - name: 💅 Prettier check
+        run: yarn format:check
+
+      - name: 🃏 Run vitest
+        run: yarn test
