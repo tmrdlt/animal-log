@@ -32,5 +32,3 @@ A simple animal rating application. Search for animals, add them to your favouri
    ```bash
    yarn dev
    ```
-
-## Demo:
